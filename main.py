@@ -1,8 +1,18 @@
 def main():
     book_path = "books/frankenstein.txt"
     text = get_book_text(book_path)
-    print(count_words(text))
-    print(count_chars(text))
+    num_words = count_words(text)
+    dict = count_chars(text)
+    converted_list = cnvrt_dict(dict)
+    converted_list.sort(reverse=True, key=sort_on)
+    
+    print(f"--- Begin report of {book_path} ---")
+    print(f"{num_words} words found in the document \n")
+    for x in converted_list:
+        character = x["char"]
+        count = x["num"]
+        print(f"the {character} character was found {count} times")
+    print("--- End report ---")
 
 def get_book_text(path):
     with open(path) as f:
@@ -18,5 +28,15 @@ def count_chars(text):
     for x in characters:
         dict[x] = lower_text.count(x)
     return dict
+
+def sort_on(dict):
+    return dict["num"]
+
+def cnvrt_dict(dict):
+    counts = []
+    for x in dict:
+        counts.append({"char" : x, "num" : dict[x]})
+    return counts
+
 
 main()
